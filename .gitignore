@@ -1,0 +1,74 @@
+# ==========================================
+# Byte-compiled / Optimized / DLL files
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# ==========================================
+# Caches and Temporary Files
+# ==========================================
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+*.log
+
+# ==========================================
+# Virtual Environments
+# ==========================================
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# ==========================================
+# Machine Learning Data & Datasets
+# ==========================================
+data/*
+!data/.gitkeep
+metropt+3+dataset/
+*.csv
+*.zip
+*.tar.gz
+*.parquet
+
+# ==========================================
+# Model Checkpoints & Output Artifacts
+# ==========================================
+checkpoints/*
+!checkpoints/.gitkeep
+*.pt
+*.pth
+*.pkl
+*.h5
+*.onnx
+
+# ==========================================
+# Experiment Tracking
+# ==========================================
+wandb/
+runs/
+mlruns/
+
+# ==========================================
+# IDE & OS Specific
+# ==========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
+.gemini/
+
+# ==========================================
+# Jupyter Notebook Checkpoints
+# ==========================================
+.ipynb_checkpoints
