@@ -3,7 +3,7 @@ Evaluate the trained autoencoder:
 
   1. Calibrate an anomaly threshold from the healthy training error distribution.
   2. Score the full stream densely (stride=1) and smooth with a rolling window.
-  3. For each of the 4 known failures, find the first threshold-crossing
+  3. For each of the 4 known failures, find the first thresh old-crossing
      BEFORE the documented failure start, and report the lead time —
      this is what you benchmark against the published 97min–16hr range.
   4. For any flagged window, report per-sensor reconstruction error so you
