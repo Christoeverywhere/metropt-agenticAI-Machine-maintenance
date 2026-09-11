@@ -1,0 +1,24 @@
+[
+  {
+    "failure_id": 3,
+    "failure_type": "Air leak",
+    "failure_start": "2020-06-05 10:00:00",
+    "detected": true,
+    "first_flag": "2020-06-04 10:08:33",
+    "lead_time_minutes": 1431.5,
+    "lead_time_hours": 23.86,
+    "peak_probability": 0.8451,
+    "consecutive_warning_windows": 527
+  },
+  {
+    "failure_id": 4,
+    "failure_type": "Air leak",
+    "failure_start": "2020-07-15 14:30:00",
+    "detected": false,
+    "first_flag": "MISSED",
+    "lead_time_minutes": null,
+    "lead_time_hours": null,
+    "peak_probability": 0.0002,
+    "consecutive_warning_windows": 0
+  }
+]

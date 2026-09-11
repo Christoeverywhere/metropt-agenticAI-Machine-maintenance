@@ -1,0 +1,176 @@
+[
+  {
+    "experiment_id": "exp_a",
+    "experiment_name": "Exp A: Sensor-only (7 dims)",
+    "input_dim": 7,
+    "threshold": 0.1,
+    "accuracy": 0.9769,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1_score": 0.0,
+    "specificity": 0.9999,
+    "pr_auc": 0.0238,
+    "roc_auc": 0.4281,
+    "fpr": 0.0001,
+    "fnr": 1.0,
+    "mean_lead_time_hours": 0.0,
+    "lead_times": [
+      {
+        "failure_id": 1,
+        "failure_type": "Air leak",
+        "failure_start": "2020-04-18 00:00:00",
+        "detected": false,
+        "first_flag": null,
+        "lead_time_minutes": null,
+        "lead_time_hours": null,
+        "peak_probability": 0.0
+      },
+      {
+        "failure_id": 2,
+        "failure_type": "Air leak",
+        "failure_start": "2020-05-29 23:30:00",
+        "detected": false,
+        "first_flag": null,
+        "lead_time_minutes": null,
+        "lead_time_hours": null,
+        "peak_probability": 0.0
+      },
+      {
+        "failure_id": 3,
+        "failure_type": "Air leak",
+        "failure_start": "2020-06-05 10:00:00",
+        "detected": false,
+        "first_flag": null,
+        "lead_time_minutes": null,
+        "lead_time_hours": null,
+        "peak_probability": 0.0442
+      },
+      {
+        "failure_id": 4,
+        "failure_type": "Air leak",
+        "failure_start": "2020-07-15 14:30:00",
+        "detected": false,
+        "first_flag": null,
+        "lead_time_minutes": null,
+        "lead_time_hours": null,
+        "peak_probability": 0.0459
+      }
+    ]
+  },
+  {
+    "experiment_id": "exp_b",
+    "experiment_name": "Exp B: Sensor + Anomaly Score (8 dims)",
+    "input_dim": 8,
+    "threshold": 0.1,
+    "accuracy": 0.9769,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1_score": 0.0,
+    "specificity": 1.0,
+    "pr_auc": 0.0224,
+    "roc_auc": 0.4573,
+    "fpr": 0.0,
+    "fnr": 1.0,
+    "mean_lead_time_hours": 0.0,
+    "lead_times": [
+      {
+        "failure_id": 1,
+        "failure_type": "Air leak",
+        "failure_start": "2020-04-18 00:00:00",
+        "detected": false,
+        "first_flag": null,
+        "lead_time_minutes": null,
+        "lead_time_hours": null,
+        "peak_probability": 0.0
+      },
+      {
+        "failure_id": 2,
+        "failure_type": "Air leak",
+        "failure_start": "2020-05-29 23:30:00",
+        "detected": false,
+        "first_flag": null,
+        "lead_time_minutes": null,
+        "lead_time_hours": null,
+        "peak_probability": 0.0
+      },
+      {
+        "failure_id": 3,
+        "failure_type": "Air leak",
+        "failure_start": "2020-06-05 10:00:00",
+        "detected": false,
+        "first_flag": null,
+        "lead_time_minutes": null,
+        "lead_time_hours": null,
+        "peak_probability": 0.0411
+      },
+      {
+        "failure_id": 4,
+        "failure_type": "Air leak",
+        "failure_start": "2020-07-15 14:30:00",
+        "detected": false,
+        "first_flag": null,
+        "lead_time_minutes": null,
+        "lead_time_hours": null,
+        "peak_probability": 0.0445
+      }
+    ]
+  },
+  {
+    "experiment_id": "exp_c",
+    "experiment_name": "Exp C: Sensor + Score + Errors (15 dims)",
+    "input_dim": 15,
+    "threshold": 0.1,
+    "accuracy": 0.9704,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1_score": 0.0,
+    "specificity": 0.9933,
+    "pr_auc": 0.0187,
+    "roc_auc": 0.4032,
+    "fpr": 0.0067,
+    "fnr": 1.0,
+    "mean_lead_time_hours": 0.0,
+    "lead_times": [
+      {
+        "failure_id": 1,
+        "failure_type": "Air leak",
+        "failure_start": "2020-04-18 00:00:00",
+        "detected": false,
+        "first_flag": null,
+        "lead_time_minutes": null,
+        "lead_time_hours": null,
+        "peak_probability": 0.0
+      },
+      {
+        "failure_id": 2,
+        "failure_type": "Air leak",
+        "failure_start": "2020-05-29 23:30:00",
+        "detected": false,
+        "first_flag": null,
+        "lead_time_minutes": null,
+        "lead_time_hours": null,
+        "peak_probability": 0.0
+      },
+      {
+        "failure_id": 3,
+        "failure_type": "Air leak",
+        "failure_start": "2020-06-05 10:00:00",
+        "detected": false,
+        "first_flag": null,
+        "lead_time_minutes": null,
+        "lead_time_hours": null,
+        "peak_probability": 0.0546
+      },
+      {
+        "failure_id": 4,
+        "failure_type": "Air leak",
+        "failure_start": "2020-07-15 14:30:00",
+        "detected": false,
+        "first_flag": null,
+        "lead_time_minutes": null,
+        "lead_time_hours": null,
+        "peak_probability": 0.0466
+      }
+    ]
+  }
+]

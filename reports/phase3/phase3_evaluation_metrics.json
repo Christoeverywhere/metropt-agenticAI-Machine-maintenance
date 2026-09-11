@@ -1,0 +1,65 @@
+{
+  "mode_a_rule_baseline": {
+    "decision": {
+      "state_classification_accuracy_pct": 100.0,
+      "action_recommendation_accuracy_pct": 100.0,
+      "total_scenarios_evaluated": 5
+    },
+    "evidence": {
+      "sensor_attribution_consistency_pct": 100.0,
+      "numerical_consistency_pct": 100.0,
+      "evidence_grounding_fidelity_pct": 100.0
+    },
+    "efficiency": {
+      "avg_tools_called": 1.0,
+      "avg_latency_ms": 0.0,
+      "p95_latency_ms": 0.0,
+      "avg_agents_invoked": 1.0,
+      "normal_state_avg_tools": 1.0,
+      "critical_state_avg_tools": 1.0,
+      "selective_routing_efficiency_pct": 0.0
+    }
+  },
+  "mode_b_single_llm": {
+    "decision": {
+      "state_classification_accuracy_pct": 100.0,
+      "action_recommendation_accuracy_pct": 100.0,
+      "total_scenarios_evaluated": 5
+    },
+    "evidence": {
+      "sensor_attribution_consistency_pct": 100.0,
+      "numerical_consistency_pct": 100.0,
+      "evidence_grounding_fidelity_pct": 100.0
+    },
+    "efficiency": {
+      "avg_tools_called": 5.0,
+      "avg_latency_ms": 0.53,
+      "p95_latency_ms": 0.64,
+      "avg_agents_invoked": 5.0,
+      "normal_state_avg_tools": 5.0,
+      "critical_state_avg_tools": 5.0,
+      "selective_routing_efficiency_pct": 0.0
+    }
+  },
+  "mode_c_agentic_system": {
+    "decision": {
+      "state_classification_accuracy_pct": 100.0,
+      "action_recommendation_accuracy_pct": 100.0,
+      "total_scenarios_evaluated": 5
+    },
+    "evidence": {
+      "sensor_attribution_consistency_pct": 100.0,
+      "numerical_consistency_pct": 100.0,
+      "evidence_grounding_fidelity_pct": 100.0
+    },
+    "efficiency": {
+      "avg_tools_called": 3.8,
+      "avg_latency_ms": 0.44,
+      "p95_latency_ms": 0.56,
+      "avg_agents_invoked": 4.0,
+      "normal_state_avg_tools": 1.0,
+      "critical_state_avg_tools": 5.0,
+      "selective_routing_efficiency_pct": 80.0
+    }
+  }
+}

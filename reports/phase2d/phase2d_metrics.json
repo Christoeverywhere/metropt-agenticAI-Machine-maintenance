@@ -1,0 +1,98 @@
+{
+  "pipeline": "Phase 2D \u2014 48-Hour Operational Validation",
+  "target_horizon_hours": 48.0,
+  "frozen_policy": {
+    "threshold": 0.02,
+    "persistence": 20,
+    "hysteresis_ratio": 0.5,
+    "cooldown_minutes": 60.0
+  },
+  "sample_level_metrics": {
+    "accuracy": 0.2560615203701125,
+    "precision": 0.043490556509443494,
+    "recall": 0.7473099618188129,
+    "f1_score": 0.08219753369220784,
+    "specificity": 0.2331411543693723,
+    "fpr": 0.7668588456306277,
+    "fnr": 0.25269003818118707,
+    "roc_auc": 0.6050317615931845,
+    "pr_auc": 0.08017069614342795,
+    "positive_prevalence_baseline": 0.044577511643379905,
+    "confusion_matrix": {
+      "tp": 2153,
+      "fp": 47352,
+      "tn": 14396,
+      "fn": 728
+    }
+  },
+  "event_level_metrics": {
+    "test_failures_count": 2,
+    "detected_failures_count": 2,
+    "event_recall": "2 / 2 (100.0%)",
+    "mean_lead_time_detected_hours": 47.864999999999995,
+    "per_failure_results": [
+      {
+        "failure_id": 3,
+        "failure_type": "Air leak",
+        "failure_start": "2020-06-05 10:00:00",
+        "detected": true,
+        "first_valid_alarm": "2020-06-03 10:01:13",
+        "lead_time_hours": 47.98,
+        "lead_time_minutes": 2878.8,
+        "peak_probability": 0.9998,
+        "peak_anomaly_score": 45.9186
+      },
+      {
+        "failure_id": 4,
+        "failure_type": "Air leak",
+        "failure_start": "2020-07-15 14:30:00",
+        "detected": true,
+        "first_valid_alarm": "2020-07-13 14:45:14",
+        "lead_time_hours": 47.75,
+        "lead_time_minutes": 2864.8,
+        "peak_probability": 0.918,
+        "peak_anomaly_score": 8.6199
+      }
+    ]
+  },
+  "false_alarm_metrics": {
+    "false_alarm_episodes": 207,
+    "test_period_days": 90.15,
+    "false_alarms_per_day": 2.3,
+    "average_episode_duration_minutes": 419.84,
+    "median_episode_duration_minutes": 109.0
+  },
+  "probability_distribution_stats": {
+    "positive_samples": {
+      "count": 2881,
+      "min": 0.0,
+      "median": 0.171514,
+      "mean": 0.225914,
+      "p90": 0.540841,
+      "p95": 0.64824,
+      "p99": 0.878694,
+      "max": 0.999803
+    },
+    "negative_samples": {
+      "count": 61748,
+      "min": 0.0,
+      "median": 0.085188,
+      "mean": 0.139208,
+      "p90": 0.33567,
+      "p95": 0.47377,
+      "p99": 0.890799,
+      "max": 1.0
+    }
+  },
+  "sanity_checks": {
+    "chronological_split": "PASS",
+    "no_future_feature_leakage": "PASS",
+    "scaler_fitted_on_train_only": "PASS",
+    "threshold_selected_on_validation_only": "PASS",
+    "persistence_selected_on_validation_only": "PASS",
+    "cooldown_selected_on_validation_only": "PASS",
+    "hysteresis_selected_on_validation_only": "PASS",
+    "test_untouched_during_policy_selection": "PASS",
+    "causal_timestamp_alignment": "PASS"
+  }
+}

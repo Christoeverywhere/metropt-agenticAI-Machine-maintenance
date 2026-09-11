@@ -1,0 +1,128 @@
+{
+  "Logistic Regression": [
+    {
+      "failure_id": 1,
+      "failure_type": "Air leak",
+      "failure_start": "2020-04-18 00:00:00",
+      "detected": false,
+      "first_flag": null,
+      "lead_time_minutes": null,
+      "lead_time_hours": null,
+      "peak_probability": 0.0
+    },
+    {
+      "failure_id": 2,
+      "failure_type": "Air leak",
+      "failure_start": "2020-05-29 23:30:00",
+      "detected": false,
+      "first_flag": null,
+      "lead_time_minutes": null,
+      "lead_time_hours": null,
+      "peak_probability": 0.0
+    },
+    {
+      "failure_id": 3,
+      "failure_type": "Air leak",
+      "failure_start": "2020-06-05 10:00:00",
+      "detected": false,
+      "first_flag": null,
+      "lead_time_minutes": null,
+      "lead_time_hours": null,
+      "peak_probability": 0.0523
+    },
+    {
+      "failure_id": 4,
+      "failure_type": "Air leak",
+      "failure_start": "2020-07-15 14:30:00",
+      "detected": true,
+      "first_flag": "2020-07-12 04:56:49",
+      "lead_time_minutes": 4893.2,
+      "lead_time_hours": 81.55,
+      "peak_probability": 0.9836
+    }
+  ],
+  "LSTM": [
+    {
+      "failure_id": 1,
+      "failure_type": "Air leak",
+      "failure_start": "2020-04-18 00:00:00",
+      "detected": false,
+      "first_flag": null,
+      "lead_time_minutes": null,
+      "lead_time_hours": null,
+      "peak_probability": 0.0
+    },
+    {
+      "failure_id": 2,
+      "failure_type": "Air leak",
+      "failure_start": "2020-05-29 23:30:00",
+      "detected": false,
+      "first_flag": null,
+      "lead_time_minutes": null,
+      "lead_time_hours": null,
+      "peak_probability": 0.0
+    },
+    {
+      "failure_id": 3,
+      "failure_type": "Air leak",
+      "failure_start": "2020-06-05 10:00:00",
+      "detected": false,
+      "first_flag": null,
+      "lead_time_minutes": null,
+      "lead_time_hours": null,
+      "peak_probability": 0.041
+    },
+    {
+      "failure_id": 4,
+      "failure_type": "Air leak",
+      "failure_start": "2020-07-15 14:30:00",
+      "detected": true,
+      "first_flag": "2020-07-12 04:40:18",
+      "lead_time_minutes": 4909.7,
+      "lead_time_hours": 81.83,
+      "peak_probability": 0.6213
+    }
+  ],
+  "GRU": [
+    {
+      "failure_id": 1,
+      "failure_type": "Air leak",
+      "failure_start": "2020-04-18 00:00:00",
+      "detected": false,
+      "first_flag": null,
+      "lead_time_minutes": null,
+      "lead_time_hours": null,
+      "peak_probability": 0.0
+    },
+    {
+      "failure_id": 2,
+      "failure_type": "Air leak",
+      "failure_start": "2020-05-29 23:30:00",
+      "detected": false,
+      "first_flag": null,
+      "lead_time_minutes": null,
+      "lead_time_hours": null,
+      "peak_probability": 0.0
+    },
+    {
+      "failure_id": 3,
+      "failure_type": "Air leak",
+      "failure_start": "2020-06-05 10:00:00",
+      "detected": false,
+      "first_flag": null,
+      "lead_time_minutes": null,
+      "lead_time_hours": null,
+      "peak_probability": 0.041
+    },
+    {
+      "failure_id": 4,
+      "failure_type": "Air leak",
+      "failure_start": "2020-07-15 14:30:00",
+      "detected": true,
+      "first_flag": "2020-07-14 02:50:17",
+      "lead_time_minutes": 2139.7,
+      "lead_time_hours": 35.66,
+      "peak_probability": 0.9077
+    }
+  ]
+}

@@ -1,0 +1,363 @@
+{
+  "scenarios": [
+    {
+      "scenario_id": 1,
+      "name": "Scenario 1 - Normal Operation",
+      "expected": {
+        "state": "NORMAL",
+        "action": "MONITOR"
+      },
+      "agentic_output": {
+        "timestamp": "2020-07-14 23:44:43",
+        "machine_state": "NORMAL",
+        "anomaly": {
+          "score": 0.6498,
+          "severity": "NORMAL",
+          "persistent": false
+        },
+        "prediction": {
+          "horizon_hours": 48,
+          "failure_probability": 0.0031,
+          "risk_level": "LOW"
+        },
+        "diagnosis": {
+          "primary_indicator": "None",
+          "supporting_indicators": [],
+          "pattern_type": "NOMINAL_OPERATION",
+          "confidence": 1.0
+        },
+        "historical_context": {
+          "similar_failure": "None",
+          "similarity": 0.0,
+          "matching_features": []
+        },
+        "maintenance": {
+          "action": "MONITOR",
+          "urgency": "LOW",
+          "recommended_area": "All compressor subsystems (Nominal Baseline)"
+        },
+        "reasoning": [
+          "Reconstruction errors and 48-hour failure risk are within nominal operational bounds.",
+          "Routine telemetry monitoring is maintained without unnecessary maintenance escalation."
+        ],
+        "evidence": [
+          "Phase 1 Anomaly Score: 0.6498 (Severity: NORMAL)",
+          "Phase 2D 48h Failure Risk: 0.31% (Risk State: LOW)"
+        ],
+        "agent_trace": {
+          "mode": "AGENTIC",
+          "agents_called": [
+            "monitoring_agent",
+            "maintenance_agent"
+          ],
+          "tools_called": [
+            "get_current_machine_state"
+          ],
+          "tool_count": 1,
+          "latency_ms": 0.33,
+          "alert_state": "NORMAL",
+          "in_cooldown": false
+        }
+      }
+    },
+    {
+      "scenario_id": 2,
+      "name": "Scenario 2 - Isolated Transient Anomaly",
+      "expected": {
+        "state": "WATCH",
+        "action": "INCREASE_MONITORING"
+      },
+      "agentic_output": {
+        "timestamp": "2020-06-20 08:30:00",
+        "machine_state": "WATCH",
+        "anomaly": {
+          "score": 3.85,
+          "severity": "ELEVATED",
+          "persistent": false
+        },
+        "prediction": {
+          "horizon_hours": 48,
+          "failure_probability": 0.008,
+          "risk_level": "LOW"
+        },
+        "diagnosis": {
+          "primary_indicator": "DV_pressure",
+          "supporting_indicators": [],
+          "pattern_type": "DISCHARGE_PRESSURE_DOMINANT_ANOMALY",
+          "confidence": 0.8831
+        },
+        "historical_context": {
+          "similar_failure": "None",
+          "similarity": 0.0,
+          "matching_features": []
+        },
+        "maintenance": {
+          "action": "INCREASE_MONITORING",
+          "urgency": "MEDIUM",
+          "recommended_area": "Pneumatic Discharge & Pressure Regulation (DV_pressure)"
+        },
+        "reasoning": [
+          "Machine telemetry exhibits mild statistical deviation from nominal operating baseline.",
+          "Localized anomaly observed primarily on DV_pressure.",
+          "Increased telemetry monitoring or opportunistic depot inspection is recommended."
+        ],
+        "evidence": [
+          "Phase 1 Anomaly Score: 3.8500 (Severity: ELEVATED)",
+          "Phase 2D 48h Failure Risk: 0.80% (Risk State: LOW)",
+          "Dominant Indicator: DV_pressure (DISCHARGE_PRESSURE_DOMINANT_ANOMALY)",
+          "Temporal Persistence: 3.3 minutes"
+        ],
+        "agent_trace": {
+          "mode": "AGENTIC",
+          "agents_called": [
+            "monitoring_agent",
+            "diagnostic_agent",
+            "maintenance_agent"
+          ],
+          "tools_called": [
+            "get_current_machine_state",
+            "get_sensor_attribution",
+            "get_recent_trend"
+          ],
+          "tool_count": 3,
+          "latency_ms": 0.41,
+          "alert_state": "WATCH",
+          "in_cooldown": false
+        }
+      }
+    },
+    {
+      "scenario_id": 3,
+      "name": "Scenario 3 - Persistent Subsystem Anomaly",
+      "expected": {
+        "state": "HIGH_RISK",
+        "action": "PRIORITY_INSPECTION"
+      },
+      "agentic_output": {
+        "timestamp": "2020-07-01 14:15:00",
+        "machine_state": "HIGH_RISK",
+        "anomaly": {
+          "score": 6.42,
+          "severity": "HIGH",
+          "persistent": true
+        },
+        "prediction": {
+          "horizon_hours": 48,
+          "failure_probability": 0.035,
+          "risk_level": "MODERATE"
+        },
+        "diagnosis": {
+          "primary_indicator": "DV_pressure",
+          "supporting_indicators": [],
+          "pattern_type": "DISCHARGE_PRESSURE_DOMINANT_ANOMALY",
+          "confidence": 0.9234
+        },
+        "historical_context": {
+          "similar_failure": "Failure #1",
+          "similarity": 0.9656,
+          "matching_features": [
+            "DV_pressure dominance matches Failure #1",
+            "Sensor attribution profile matches Failure #1 (similarity 96.6%)",
+            "Unimodal DV_pressure surge with low motor/thermal deviation",
+            "Persistent anomaly (42 min) matches pre-failure duration pattern"
+          ]
+        },
+        "maintenance": {
+          "action": "PRIORITY_INSPECTION",
+          "urgency": "HIGH",
+          "recommended_area": "Pneumatic Discharge & Pressure Regulation (DV_pressure)"
+        },
+        "reasoning": [
+          "Supervised 48-hour impending failure risk has breached operational policy with confirmed persistence.",
+          "Reconstruction error is heavily concentrated in DV_pressure.",
+          "Degradation signature aligns with historical Failure #1 air-leak precursor.",
+          "Priority maintenance inspection is required to prevent unscheduled downtime."
+        ],
+        "evidence": [
+          "Phase 1 Anomaly Score: 6.4200 (Severity: HIGH)",
+          "Phase 2D 48h Failure Risk: 3.50% (Risk State: MODERATE)",
+          "Dominant Indicator: DV_pressure (DISCHARGE_PRESSURE_DOMINANT_ANOMALY)",
+          "Temporal Persistence: 41.7 minutes",
+          "Historical Analogy: Strong match to Failure #1 (96.6% similarity)"
+        ],
+        "agent_trace": {
+          "mode": "AGENTIC",
+          "agents_called": [
+            "monitoring_agent",
+            "diagnostic_agent",
+            "historical_similarity_agent",
+            "risk_reasoning_agent",
+            "maintenance_agent"
+          ],
+          "tools_called": [
+            "get_current_machine_state",
+            "get_sensor_attribution",
+            "get_recent_trend",
+            "search_historical_failures",
+            "generate_maintenance_context"
+          ],
+          "tool_count": 5,
+          "latency_ms": 0.44,
+          "alert_state": "HIGH_RISK",
+          "in_cooldown": false
+        }
+      }
+    },
+    {
+      "scenario_id": 4,
+      "name": "Scenario 4 - Failure #3 Impending Precursor",
+      "expected": {
+        "state": "CRITICAL",
+        "action": "IMMEDIATE_MAINTENANCE_REVIEW"
+      },
+      "agentic_output": {
+        "timestamp": "2020-06-04 12:00:00",
+        "machine_state": "CRITICAL",
+        "anomaly": {
+          "score": 18.75,
+          "severity": "CRITICAL",
+          "persistent": true
+        },
+        "prediction": {
+          "horizon_hours": 48,
+          "failure_probability": 0.885,
+          "risk_level": "CRITICAL"
+        },
+        "diagnosis": {
+          "primary_indicator": "DV_pressure",
+          "supporting_indicators": [],
+          "pattern_type": "DISCHARGE_PRESSURE_DOMINANT_ANOMALY",
+          "confidence": 0.952
+        },
+        "historical_context": {
+          "similar_failure": "Failure #3",
+          "similarity": 0.9827,
+          "matching_features": [
+            "DV_pressure dominance matches Failure #3",
+            "Sensor attribution profile matches Failure #3 (similarity 98.3%)",
+            "Severe accelerating DV_pressure anomaly with high persistence (>4h)",
+            "Persistent anomaly (75 min) matches pre-failure duration pattern"
+          ]
+        },
+        "maintenance": {
+          "action": "IMMEDIATE_MAINTENANCE_REVIEW",
+          "urgency": "CRITICAL",
+          "recommended_area": "Pneumatic Discharge & Pressure Regulation (DV_pressure)"
+        },
+        "reasoning": [
+          "Critical failure risk (>50%) or severe accelerating anomaly is actively developing.",
+          "Immediate physical maintenance review and operational safety isolation are required."
+        ],
+        "evidence": [
+          "Phase 1 Anomaly Score: 18.7500 (Severity: CRITICAL)",
+          "Phase 2D 48h Failure Risk: 88.50% (Risk State: CRITICAL)",
+          "Dominant Indicator: DV_pressure (DISCHARGE_PRESSURE_DOMINANT_ANOMALY)",
+          "Temporal Persistence: 75.0 minutes",
+          "Historical Analogy: Strong match to Failure #3 (98.3% similarity)"
+        ],
+        "agent_trace": {
+          "mode": "AGENTIC",
+          "agents_called": [
+            "monitoring_agent",
+            "diagnostic_agent",
+            "historical_similarity_agent",
+            "risk_reasoning_agent",
+            "maintenance_agent"
+          ],
+          "tools_called": [
+            "get_current_machine_state",
+            "get_sensor_attribution",
+            "get_recent_trend",
+            "search_historical_failures",
+            "generate_maintenance_context"
+          ],
+          "tool_count": 5,
+          "latency_ms": 0.44,
+          "alert_state": "CRITICAL",
+          "in_cooldown": false
+        }
+      }
+    },
+    {
+      "scenario_id": 5,
+      "name": "Scenario 5 - Failure #4 Impending Precursor",
+      "expected": {
+        "state": "HIGH_RISK",
+        "action": "PRIORITY_INSPECTION"
+      },
+      "agentic_output": {
+        "timestamp": "2020-07-14 14:00:00",
+        "machine_state": "HIGH_RISK",
+        "anomaly": {
+          "score": 4.85,
+          "severity": "HIGH",
+          "persistent": true
+        },
+        "prediction": {
+          "horizon_hours": 48,
+          "failure_probability": 0.042,
+          "risk_level": "MODERATE"
+        },
+        "diagnosis": {
+          "primary_indicator": "DV_pressure",
+          "supporting_indicators": [
+            "H1",
+            "TP2"
+          ],
+          "pattern_type": "INTAKE_OR_PNEUMATIC_CROSS_COUPLING",
+          "confidence": 0.7278
+        },
+        "historical_context": {
+          "similar_failure": "Failure #4",
+          "similarity": 0.9906,
+          "matching_features": [
+            "DV_pressure dominance matches Failure #4",
+            "Sensor attribution profile matches Failure #4 (similarity 99.1%)",
+            "Multi-sensor air-leak precursor with elevated H1 and TP2 pneumatic cross-coupling",
+            "Persistent anomaly (37 min) matches pre-failure duration pattern"
+          ]
+        },
+        "maintenance": {
+          "action": "PRIORITY_INSPECTION",
+          "urgency": "HIGH",
+          "recommended_area": "Pneumatic Discharge & Pressure Regulation (DV_pressure, H1, TP2)"
+        },
+        "reasoning": [
+          "Supervised 48-hour impending failure risk has breached operational policy with confirmed persistence.",
+          "Reconstruction error is heavily concentrated in DV_pressure.",
+          "Degradation signature aligns with historical Failure #4 air-leak precursor.",
+          "Priority maintenance inspection is required to prevent unscheduled downtime."
+        ],
+        "evidence": [
+          "Phase 1 Anomaly Score: 4.8500 (Severity: HIGH)",
+          "Phase 2D 48h Failure Risk: 4.20% (Risk State: MODERATE)",
+          "Dominant Indicator: DV_pressure (INTAKE_OR_PNEUMATIC_CROSS_COUPLING)",
+          "Supporting Indicators: H1, TP2",
+          "Temporal Persistence: 36.7 minutes",
+          "Historical Analogy: Strong match to Failure #4 (99.1% similarity)"
+        ],
+        "agent_trace": {
+          "mode": "AGENTIC",
+          "agents_called": [
+            "monitoring_agent",
+            "diagnostic_agent",
+            "historical_similarity_agent",
+            "risk_reasoning_agent",
+            "maintenance_agent"
+          ],
+          "tools_called": [
+            "get_current_machine_state",
+            "get_sensor_attribution",
+            "get_recent_trend",
+            "search_historical_failures",
+            "generate_maintenance_context"
+          ],
+          "tool_count": 5,
+          "latency_ms": 0.59,
+          "alert_state": "CRITICAL",
+          "in_cooldown": false
+        }
+      }
+    }
+  ]
+}

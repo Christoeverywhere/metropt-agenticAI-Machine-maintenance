@@ -1,0 +1,21 @@
+{
+  "phase3_version": "1.0.0",
+  "frozen_policy_path": "checkpoints/phase2d/phase2d_frozen_policy.json",
+  "risk_threshold": 0.02,
+  "cooldown_minutes": 60.0,
+  "hysteresis_ratio": 0.5,
+  "analogue_sensors": [
+    "DV_pressure",
+    "H1",
+    "TP2",
+    "TP3",
+    "Reservoirs",
+    "Motor_current",
+    "Oil_temperature"
+  ],
+  "modes_evaluated": [
+    "RULE_BASED",
+    "SINGLE_LLM",
+    "AGENTIC"
+  ]
+}

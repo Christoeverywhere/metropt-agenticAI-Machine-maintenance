@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agentic Predictive Maintenance Dashboard — Phase 3</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --accent-blue: #38bdf8;
+      --accent-green: #4ade80;
+      --accent-amber: #fbbf24;
+      --accent-red: #f87171;
+      --accent-purple: #c084fc;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      padding: 24px;
+      min-height: 100vh;
+    }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 24px;
+    }
+
+    .header-title h1 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--text-main);
+    }
+
+    .header-title p {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .scenario-selector {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .btn-scenario {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .btn-scenario:hover {
+      border-color: var(--accent-blue);
+      background-color: #273549;
+    }
+
+    .btn-scenario.active {
+      background-color: #0369a1;
+      border-color: var(--accent-blue);
+      color: white;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 1024px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--accent-blue);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .status-badge {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .status-NORMAL { background-color: rgba(74, 222, 128, 0.2); color: var(--accent-green); border: 1px solid var(--accent-green); }
+    .status-WATCH { background-color: rgba(251, 191, 36, 0.2); color: var(--accent-amber); border: 1px solid var(--accent-amber); }
+    .status-HIGH_RISK { background-color: rgba(248, 113, 113, 0.2); color: var(--accent-red); border: 1px solid var(--accent-red); }
+    .status-CRITICAL { background-color: rgba(220, 38, 38, 0.3); color: #ff8080; border: 1px solid #ff4d4d; animation: pulse 1.5s infinite; }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 6px rgba(239, 68, 68, 0.6); }
+      50% { box-shadow: 0 0 16px rgba(239, 68, 68, 0.9); }
+    }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .metric-box {
+      background-color: rgba(15, 23, 42, 0.6);
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .metric-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .metric-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .sensor-bar-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sensor-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .sensor-name {
+      width: 100px;
+      color: var(--text-muted);
+    }
+
+    .sensor-bar-track {
+      flex: 1;
+      height: 10px;
+      background-color: #0f172a;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .sensor-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #38bdf8, #f87171);
+      border-radius: 5px;
+      transition: width 0.4s ease;
+    }
+
+    .sensor-val {
+      width: 45px;
+      text-align: right;
+      font-weight: 600;
+    }
+
+    .action-box {
+      background: linear-gradient(135deg, rgba(3, 105, 161, 0.2), rgba(15, 23, 42, 0.8));
+      border: 1px solid var(--accent-blue);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .action-badge {
+      display: inline-block;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--accent-blue);
+      margin-bottom: 6px;
+    }
+
+    .evidence-item {
+      display: flex;
+      gap: 10px;
+      font-size: 13px;
+      line-height: 1.4;
+      padding: 8px 12px;
+      background: rgba(15, 23, 42, 0.4);
+      border-radius: 6px;
+      border-left: 3px solid var(--accent-blue);
+    }
+
+    .evidence-item.alert-check {
+      border-left-color: var(--accent-green);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-bar">
+    <div class="header-title">
+      <h1>MetroPT-3 Agentic Predictive Maintenance Decision System</h1>
+      <p>Phase 3 Multi-Agent Reasoning Engine • Frozen DAE & 48h Impending Failure Predictor</p>
+    </div>
+    <div>
+      <span class="status-badge" style="background-color: #1e293b; border: 1px solid #475569; color: #38bdf8;">
+        FROZEN POLICY: P=0.020 | PERSIST=20
+      </span>
+    </div>
+  </div>
+
+  <div class="scenario-selector" id="scenarioButtons">
+    <!-- Populated by JS -->
+  </div>
+
+  <div class="dashboard-grid">
+    <!-- Card 1: Machine State & Telemetry -->
+    <div class="card">
+      <div class="card-title">
+        <span>Machine Situation Assessment</span>
+        <span class="status-badge" id="machineStateBadge">NORMAL</span>
+      </div>
+
+      <div class="metric-row">
+        <div class="metric-box">
+          <div class="metric-label">48h Impending Failure Risk</div>
+          <div class="metric-value" id="riskValue">0.12%</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">Phase 1 Anomaly MSE</div>
+          <div class="metric-value" id="anomalyScoreValue">0.35</div>
+        </div>
+      </div>
+
+      <div class="metric-row">
+        <div class="metric-box">
+          <div class="metric-label">Temporal Persistence</div>
+          <div class="metric-value" id="persistenceValue">0 min</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">Operational Urgency</div>
+          <div class="metric-value" id="urgencyValue" style="color: var(--accent-green);">LOW</div>
+        </div>
+      </div>
+
+      <div class="card-title" style="margin-top: 10px;">Sensor Attribution Profile</div>
+      <div class="sensor-bar-container" id="sensorBars">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- Card 2: Diagnostic & Historical Analogy -->
+    <div class="card">
+      <div class="card-title">Diagnostic & Historical Precursor</div>
+
+      <div class="metric-box" style="border-left: 3px solid var(--accent-purple);">
+        <div class="metric-label">Primary Anomaly Indicator</div>
+        <div class="metric-value" id="dominantIndicator" style="font-size: 16px; color: var(--accent-purple);">DV_pressure</div>
+        <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;" id="patternType">Nominal Operation</div>
+      </div>
+
+      <div class="metric-box" style="border-left: 3px solid var(--accent-amber);">
+        <div class="metric-label">Historical Precursor Match</div>
+        <div class="metric-value" id="historicalMatch" style="font-size: 16px; color: var(--accent-amber);">None</div>
+        <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;" id="historicalSimilarity">Similarity: 0.0%</div>
+      </div>
+
+      <div class="action-box">
+        <div class="metric-label" style="text-transform: uppercase; letter-spacing: 0.5px;">Recommended Maintenance Action</div>
+        <div class="action-badge" id="recommendedAction">MONITOR</div>
+        <p style="font-size: 13px; color: var(--text-muted);" id="recommendedArea">All compressor subsystems (Nominal baseline telemetry)</p>
+      </div>
+    </div>
+
+    <!-- Card 3: Evidence Grounding & Trace -->
+    <div class="card">
+      <div class="card-title">Evidence-Grounded Reasoning Trace</div>
+      <div style="display: flex; flex-direction: column; gap: 8px;" id="evidenceList">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const scenarios = [
+      {
+        id: 1,
+        name: "Scenario 1: Normal Operation",
+        state: "NORMAL",
+        risk: 0.12,
+        anomaly: 0.35,
+        persistence: "0 min",
+        urgency: "LOW",
+        dominant: "Nominal",
+        pattern: "NOMINAL_OPERATION",
+        historical: "None",
+        similarity: "0.0%",
+        action: "MONITOR",
+        area: "All compressor subsystems (Nominal baseline telemetry)",
+        sensors: { "DV_pressure": 35, "H1": 20, "TP2": 15, "TP3": 12, "Reservoirs": 8, "Motor_current": 6, "Oil_temperature": 4 },
+        evidence: [
+          "Phase 1 Anomaly Score: 0.3500 (Severity: NORMAL)",
+          "Phase 2D 48h Failure Risk: 0.12% (Risk State: LOW)",
+          "Reconstruction errors remain within healthy operational baseline bounds",
+          "Maintain standard predictive telemetry monitoring schedule"
+        ]
+      },
+      {
+        id: 2,
+        name: "Scenario 2: Isolated Transient Anomaly",
+        state: "WATCH",
+        risk: 0.80,
+        anomaly: 3.85,
+        persistence: "3.3 min",
+        urgency: "MEDIUM",
+        dominant: "DV_pressure",
+        pattern: "DISCHARGE_PRESSURE_DOMINANT_ANOMALY",
+        historical: "None",
+        similarity: "38.5%",
+        action: "INCREASE_MONITORING",
+        area: "Pneumatic Discharge & Pressure Regulation (DV_pressure)",
+        sensors: { "DV_pressure": 78, "H1": 8, "TP2": 6, "TP3": 4, "Reservoirs": 2, "Motor_current": 1, "Oil_temperature": 1 },
+        evidence: [
+          "Phase 1 Anomaly Score: 3.8500 (Severity: ELEVATED)",
+          "Phase 2D 48h Failure Risk: 0.80% (Risk State: LOW)",
+          "DV_pressure is dominant indicator (78.0% contribution)",
+          "Transient spike without sustained persistence; increase telemetry frequency"
+        ]
+      },
+      {
+        id: 3,
+        name: "Scenario 3: Persistent Subsystem Anomaly",
+        state: "HIGH_RISK",
+        risk: 3.50,
+        anomaly: 6.42,
+        persistence: "41.7 min",
+        urgency: "HIGH",
+        dominant: "DV_pressure",
+        pattern: "DISCHARGE_PRESSURE_DOMINANT_ANOMALY",
+        historical: "Failure #2",
+        similarity: "76.4%",
+        action: "PRIORITY_INSPECTION",
+        area: "Pneumatic Discharge & Pressure Regulation (DV_pressure, H1)",
+        sensors: { "DV_pressure": 82, "H1": 7, "TP2": 5, "TP3": 3, "Reservoirs": 1.5, "Motor_current": 1.0, "Oil_temperature": 0.5 },
+        evidence: [
+          "Phase 1 Anomaly Score: 6.4200 (Severity: HIGH)",
+          "Phase 2D 48h Failure Risk: 3.50% (Exceeds 2.0% operational policy threshold)",
+          "Abnormality has persisted for 41.7 minutes across 25 consecutive windows",
+          "Historical Analogy: Strong match to Failure #2 precursor (76.4% similarity)"
+        ]
+      },
+      {
+        id: 4,
+        name: "Scenario 4: Failure #3 Precursor",
+        state: "CRITICAL",
+        risk: 88.50,
+        anomaly: 18.75,
+        persistence: "75.0 min",
+        urgency: "CRITICAL",
+        dominant: "DV_pressure",
+        pattern: "DISCHARGE_PRESSURE_DOMINANT_ANOMALY",
+        historical: "Failure #3",
+        similarity: "94.2%",
+        action: "IMMEDIATE_MAINTENANCE_REVIEW",
+        area: "Pneumatic Discharge Subsystem (DV_pressure, TP2, TP3)",
+        sensors: { "DV_pressure": 92, "H1": 3, "TP2": 2, "TP3": 1.5, "Reservoirs": 0.8, "Motor_current": 0.4, "Oil_temperature": 0.3 },
+        evidence: [
+          "Phase 1 Anomaly Score: 18.7500 (Severity: CRITICAL)",
+          "Phase 2D 48h Failure Risk: 88.50% (Critical impending failure state)",
+          "DV_pressure accounts for 92.0% of total reconstruction error",
+          "Historical Analogy: Strong match to Failure #3 precursor (94.2% similarity)"
+        ]
+      },
+      {
+        id: 5,
+        name: "Scenario 5: Failure #4 Precursor",
+        state: "HIGH_RISK",
+        risk: 4.20,
+        anomaly: 4.85,
+        persistence: "36.7 min",
+        urgency: "HIGH",
+        dominant: "DV_pressure",
+        pattern: "MULTI_SENSOR_COUPLED_ANOMALY",
+        historical: "Failure #4",
+        similarity: "87.8%",
+        action: "PRIORITY_INSPECTION",
+        area: "Pneumatic Intake & Interstage Stages (DV_pressure, H1, TP2)",
+        sensors: { "DV_pressure": 55, "H1": 22, "TP2": 12, "TP3": 5, "Reservoirs": 3, "Motor_current": 2, "Oil_temperature": 1 },
+        evidence: [
+          "Phase 1 Anomaly Score: 4.8500 (Severity: HIGH)",
+          "Phase 2D 48h Failure Risk: 4.20% (Exceeds operational threshold)",
+          "Multi-sensor cross-coupling: H1 (22%) and TP2 (12%) support DV_pressure (55%)",
+          "Historical Analogy: Matches Failure #4 multi-sensor air-leak precursor (87.8%)"
+        ]
+      }
+    ];
+
+    function renderScenario(sc) {
+      // Badges
+      const stateBadge = document.getElementById("machineStateBadge");
+      stateBadge.textContent = sc.state;
+      stateBadge.className = `status-badge status-${sc.state}`;
+
+      document.getElementById("riskValue").textContent = `${sc.risk.toFixed(2)}%`;
+      document.getElementById("anomalyScoreValue").textContent = sc.anomaly.toFixed(2);
+      document.getElementById("persistenceValue").textContent = sc.persistence;
+
+      const urgEl = document.getElementById("urgencyValue");
+      urgEl.textContent = sc.urgency;
+      urgEl.style.color = sc.urgency === "CRITICAL" ? "var(--accent-red)" : sc.urgency === "HIGH" ? "var(--accent-red)" : sc.urgency === "MEDIUM" ? "var(--accent-amber)" : "var(--accent-green)";
+
+      document.getElementById("dominantIndicator").textContent = sc.dominant;
+      document.getElementById("patternType").textContent = sc.pattern;
+      document.getElementById("historicalMatch").textContent = sc.historical;
+      document.getElementById("historicalSimilarity").textContent = `Similarity: ${sc.similarity}`;
+
+      document.getElementById("recommendedAction").textContent = sc.action;
+      document.getElementById("recommendedArea").textContent = sc.area;
+
+      // Sensor Bars
+      const barsContainer = document.getElementById("sensorBars");
+      barsContainer.innerHTML = "";
+      for (const [s, val] of Object.entries(sc.sensors)) {
+        barsContainer.innerHTML += `
+          <div class="sensor-bar-row">
+            <span class="sensor-name">${s}</span>
+            <div class="sensor-bar-track">
+              <div class="sensor-bar-fill" style="width: ${val}%"></div>
+            </div>
+            <span class="sensor-val">${val}%</span>
+          </div>
+        `;
+      }
+
+      // Evidence Trace
+      const evList = document.getElementById("evidenceList");
+      evList.innerHTML = "";
+      sc.evidence.forEach(ev => {
+        evList.innerHTML += `
+          <div class="evidence-item alert-check">
+            <span>✓</span>
+            <span>${ev}</span>
+          </div>
+        `;
+      });
+    }
+
+    // Initialize buttons
+    const btnContainer = document.getElementById("scenarioButtons");
+    scenarios.forEach((sc, idx) => {
+      const btn = document.createElement("button");
+      btn.className = `btn-scenario ${idx === 0 ? "active" : ""}`;
+      btn.textContent = sc.name;
+      btn.onclick = () => {
+        document.querySelectorAll(".btn-scenario").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        renderScenario(sc);
+      };
+      btnContainer.appendChild(btn);
+    });
+
+    // Render initial scenario
+    renderScenario(scenarios[0]);
+  </script>
+</body>
+</html>

@@ -1,36 +1,71 @@
 """
-Central configuration for the MetroPT-3 LSTM autoencoder pipeline.
+Central configuration: paths, hyperparameters, sensor schema, known failures.
+Every other module imports from here — no magic numbers/strings elsewhere.
 """
+import os
 
-from pathlib import Path
+try:
+    import torch
+    _TORCH_AVAILABLE = True
+except ImportError:
+    # PyTorch is required to actually train/run the model (see train.py /
+    # evaluate.py / model.py). It is NOT required for data_loader.py or
+    # windowing.py, which only depend on pandas/numpy/scikit-learn. This
+    # fallback lets those modules (and this config) be imported/tested in
+    # a PyTorch-less environment without crashing.
+    _TORCH_AVAILABLE = False
 
-# ---------------------------------------------------------------------------
+# --------------------------------------------------------------------------
 # Paths
-# ---------------------------------------------------------------------------
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DATA_DIR = PROJECT_ROOT / "data"
-RAW_CSV_PATH = DATA_DIR / "MetroPT3(AirCompressor).csv"
-CHECKPOINT_DIR = PROJECT_ROOT / "checkpoints"
-SCALER_PATH = CHECKPOINT_DIR / "scaler.pkl"
-MODEL_CHECKPOINT_PATH = CHECKPOINT_DIR / "lstm_ae.pt"
+# --------------------------------------------------------------------------
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(PROJECT_ROOT, "data")
+CHECKPOINT_DIR = os.path.join(PROJECT_ROOT, "checkpoints")
+REPORTS_DIR = os.path.join(PROJECT_ROOT, "reports")
+FIGURES_DIR = os.path.join(REPORTS_DIR, "figures")
 
-# ---------------------------------------------------------------------------
-# Sensor columns
-# Analogue (continuous) sensors — these are what the autoencoder reconstructs.
-# The digital signals are kept for context but excluded from reconstruction
-# since they are near-binary and would dominate a shared MSE loss.
-# ---------------------------------------------------------------------------
-ANALOGUE_FEATURES = [
+RAW_CSV_PATH = os.path.join(DATA_DIR, "MetroPT3(AirCompressor).csv")
+
+MODEL_PATH = os.path.join(CHECKPOINT_DIR, "lstm_ae.pt")
+SCALER_PATH = os.path.join(CHECKPOINT_DIR, "scaler.pkl")
+SCORED_STREAM_PATH = os.path.join(CHECKPOINT_DIR, "scored_stream.csv")
+
+os.makedirs(CHECKPOINT_DIR, exist_ok=True)
+os.makedirs(FIGURES_DIR, exist_ok=True)
+
+# --------------------------------------------------------------------------
+# Sensor schema
+# --------------------------------------------------------------------------
+# NOTE: the real CSV header has a couple of quirks vs. the tidy names used
+# in documentation - normalize on load in data_loader.py, but the *names
+# we standardize to* are defined here and used everywhere downstream.
+#
+# Raw header quirks observed in data/MetroPT3(AirCompressor).csv:
+#   - leading unnamed index column            -> dropped
+#   - "DV_eletric"      (typo, missing "c")   -> renamed to DV_electric
+#   - "Caudal_impulses" (plural)              -> renamed to Caudal_impulse
+
+RAW_TO_STANDARD_COLUMN_MAP = {
+    "DV_eletric": "DV_electric",
+    "Caudal_impulses": "Caudal_impulse",
+}
+
+TIMESTAMP_COL = "timestamp"
+
+# 7 continuous sensors used for reconstruction (encoder + decoder target)
+FEATURES = [
+    "DV_pressure",
+    "H1",
     "TP2",
     "TP3",
-    "H1",
-    "DV_pressure",
     "Reservoirs",
-    "Oil_temperature",
     "Motor_current",
+    "Oil_temperature",
 ]
+ANALOGUE_SENSORS = FEATURES
 
-DIGITAL_FEATURES = [
+# 8 near-binary sensors excluded from the reconstruction loss
+DIGITAL_SENSORS = [
     "COMP",
     "DV_electric",
     "Towers",
@@ -41,13 +76,12 @@ DIGITAL_FEATURES = [
     "Caudal_impulse",
 ]
 
-TIMESTAMP_COL = "timestamp"
+ALL_SENSORS = ANALOGUE_SENSORS + DIGITAL_SENSORS
+N_FEATURES = len(ANALOGUE_SENSORS)  # 7
 
-# ---------------------------------------------------------------------------
-# Known failure windows (from the UCI dataset card / Data Description PDF).
-# Used ONLY for evaluation and as an exclusion mask during training —
-# never as labels fed into the model, since we are training unsupervised.
-# ---------------------------------------------------------------------------
+# --------------------------------------------------------------------------
+# Known failure events (evaluation only - never used as training labels)
+# --------------------------------------------------------------------------
 KNOWN_FAILURES = [
     {
         "id": 1,
@@ -79,43 +113,49 @@ KNOWN_FAILURES = [
     },
 ]
 
-# ---------------------------------------------------------------------------
+# --------------------------------------------------------------------------
 # Windowing / sequence hyperparameters
-# Data is logged at 1Hz. A 180-step window = 3 minutes of context per sample.
-# ---------------------------------------------------------------------------
-SEQUENCE_LENGTH = 180
-SEQUENCE_STRIDE = 30          # 30s stride between overlapping windows during training
-INFERENCE_STRIDE = 1          # dense scoring at inference time
+# --------------------------------------------------------------------------
+SEQUENCE_LENGTH = 180        # 3 minutes of 1Hz-equivalent samples per window
+SEQUENCE_STRIDE = 30         # stride between windows during training
+INFERENCE_STRIDE = 1         # dense stride during evaluation/scoring
 
-# ---------------------------------------------------------------------------
+# --------------------------------------------------------------------------
 # Model hyperparameters
-# ---------------------------------------------------------------------------
+# --------------------------------------------------------------------------
 HIDDEN_SIZE = 64
 LATENT_SIZE = 16
 NUM_LSTM_LAYERS = 1
 DROPOUT = 0.1
 
-# ---------------------------------------------------------------------------
-# Training hyperparameters
-# ---------------------------------------------------------------------------
+# --------------------------------------------------------------------------
+# Stage 1: initial fit
+# --------------------------------------------------------------------------
 INITIAL_EPOCHS = 15
 INITIAL_LR = 1e-3
 INITIAL_BATCH_SIZE = 256
 
-# Incremental (batch-by-batch) fine-tuning
-FINETUNE_CHUNK = "7D"         # re-fit on ~weekly chunks of new data as they "arrive"
-FINETUNE_EPOCHS = 2           # light touch per chunk — avoid catastrophic forgetting
+# --------------------------------------------------------------------------
+# Stage 2: incremental fine-tuning
+# --------------------------------------------------------------------------
+FINETUNE_CHUNK = "7D"                  # pandas offset alias: 7-day chunks
+FINETUNE_EPOCHS = 2
 FINETUNE_LR = 2e-4
 FINETUNE_BATCH_SIZE = 256
+FINETUNE_SKIP_ERROR_MULTIPLE = 2.5     # skip fine-tuning if chunk err > 2.5x baseline
 
-# A chunk is skipped for fine-tuning (but still scored) if its mean
-# reconstruction error is already above this multiple of the running
-# healthy-baseline error — protects the model from "learning" a fault as normal.
-FINETUNE_SKIP_ERROR_MULTIPLE = 2.5
+# --------------------------------------------------------------------------
+# Anomaly detection
+# --------------------------------------------------------------------------
+THRESHOLD_K = 4.0             # k-sigma multiplier
+ROLLING_SCORE_WINDOW = 60     # seconds, for smoothing dense scores
 
-# ---------------------------------------------------------------------------
-# Anomaly thresholding
-# Threshold = mean(healthy_val_error) + THRESHOLD_K * std(healthy_val_error)
-# ---------------------------------------------------------------------------
-THRESHOLD_K = 4.0
-ROLLING_SCORE_WINDOW = 60      # smooth per-timestep error over 60s before thresholding
+# --------------------------------------------------------------------------
+# Misc
+# --------------------------------------------------------------------------
+RANDOM_SEED = 42
+
+if _TORCH_AVAILABLE:
+    DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+else:
+    DEVICE = "cpu"  # placeholder; real training requires PyTorch installed

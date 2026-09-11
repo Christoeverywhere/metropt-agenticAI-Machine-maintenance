@@ -1,0 +1,9 @@
+{
+  "avg_tools_called": 3.8,
+  "avg_latency_ms": 0.44,
+  "p95_latency_ms": 0.56,
+  "avg_agents_invoked": 4.0,
+  "normal_state_avg_tools": 1.0,
+  "critical_state_avg_tools": 5.0,
+  "selective_routing_efficiency_pct": 80.0
+}

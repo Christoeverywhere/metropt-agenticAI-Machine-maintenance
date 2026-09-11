@@ -72,3 +72,9 @@ desktop.ini
 # Jupyter Notebook Checkpoints
 # ==========================================
 .ipynb_checkpoints
+# ==========================================
+# Environment / Secrets
+# ==========================================
+.env
+.env.*
+!.env.example

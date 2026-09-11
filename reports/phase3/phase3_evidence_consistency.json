@@ -1,0 +1,5 @@
+{
+  "sensor_attribution_consistency_pct": 100.0,
+  "numerical_consistency_pct": 100.0,
+  "evidence_grounding_fidelity_pct": 100.0
+}

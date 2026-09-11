@@ -1,0 +1,208 @@
+{
+  "pipeline": "Phase 2B \u2014 Phase-1-Derived Temporal Degradation Model",
+  "base_detector": "Denoising Dense Autoencoder (Phase 1)",
+  "phase1_p99_threshold": 2.913448,
+  "primary_horizon_hours": 24.0,
+  "horizons": {
+    "6h": {
+      "frozen_threshold": 0.01,
+      "frozen_persistence_windows": 1,
+      "best_val_f1": 0.0,
+      "metrics": {
+        "accuracy": 0.9863683485741694,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0,
+        "specificity": 0.9930677799760098,
+        "fpr": 0.006932220023990155,
+        "fnr": 1.0,
+        "roc_auc": 0.32955186959851723,
+        "pr_auc": 0.004677909334744981,
+        "positive_prevalence_baseline": 0.006746197527425769,
+        "confusion_matrix": {
+          "tp": 0,
+          "fp": 445,
+          "tn": 63748,
+          "fn": 436
+        },
+        "false_alarm_episodes": 4,
+        "test_event_detection_rate": 0.0,
+        "mean_lead_time_detected_hours": 0.0
+      },
+      "event_detection": [
+        {
+          "failure_id": 3,
+          "failure_type": "Air leak",
+          "failure_start": "2020-06-05 10:00:00",
+          "detected": false,
+          "first_flag": "MISSED",
+          "lead_time_minutes": null,
+          "lead_time_hours": null,
+          "peak_probability": 0.0,
+          "consecutive_warning_windows": 0
+        },
+        {
+          "failure_id": 4,
+          "failure_type": "Air leak",
+          "failure_start": "2020-07-15 14:30:00",
+          "detected": false,
+          "first_flag": "MISSED",
+          "lead_time_minutes": null,
+          "lead_time_hours": null,
+          "peak_probability": 0.0,
+          "consecutive_warning_windows": 0
+        }
+      ]
+    },
+    "12h": {
+      "frozen_threshold": 0.01,
+      "frozen_persistence_windows": 1,
+      "best_val_f1": 0.0,
+      "metrics": {
+        "accuracy": 0.9792043819338068,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0,
+        "specificity": 0.992581323128078,
+        "fpr": 0.007418676871921955,
+        "fnr": 1.0,
+        "roc_auc": 0.4640497872822713,
+        "pr_auc": 0.011653744998160505,
+        "positive_prevalence_baseline": 0.013476922124742762,
+        "confusion_matrix": {
+          "tp": 0,
+          "fp": 473,
+          "tn": 63285,
+          "fn": 871
+        },
+        "false_alarm_episodes": 6,
+        "test_event_detection_rate": 0.0,
+        "mean_lead_time_detected_hours": 0.0
+      },
+      "event_detection": [
+        {
+          "failure_id": 3,
+          "failure_type": "Air leak",
+          "failure_start": "2020-06-05 10:00:00",
+          "detected": false,
+          "first_flag": "MISSED",
+          "lead_time_minutes": null,
+          "lead_time_hours": null,
+          "peak_probability": 0.0,
+          "consecutive_warning_windows": 0
+        },
+        {
+          "failure_id": 4,
+          "failure_type": "Air leak",
+          "failure_start": "2020-07-15 14:30:00",
+          "detected": false,
+          "first_flag": "MISSED",
+          "lead_time_minutes": null,
+          "lead_time_hours": null,
+          "peak_probability": 0.0,
+          "consecutive_warning_windows": 0
+        }
+      ]
+    },
+    "24h": {
+      "frozen_threshold": 0.01,
+      "frozen_persistence_windows": 1,
+      "best_val_f1": 0.0605,
+      "metrics": {
+        "accuracy": 0.7895836234507728,
+        "precision": 0.04003646585124972,
+        "recall": 0.35369127516778526,
+        "f1_score": 0.07193066266293592,
+        "specificity": 0.7998701278132374,
+        "fpr": 0.20012987218676254,
+        "fnr": 0.6463087248322148,
+        "roc_auc": 0.4916805745839769,
+        "pr_auc": 0.03219475523290025,
+        "positive_prevalence_baseline": 0.0230546658620743,
+        "confusion_matrix": {
+          "tp": 527,
+          "fp": 12636,
+          "tn": 50503,
+          "fn": 963
+        },
+        "false_alarm_episodes": 3268,
+        "test_event_detection_rate": 0.5,
+        "mean_lead_time_detected_hours": 23.86
+      },
+      "event_detection": [
+        {
+          "failure_id": 3,
+          "failure_type": "Air leak",
+          "failure_start": "2020-06-05 10:00:00",
+          "detected": true,
+          "first_flag": "2020-06-04 10:08:33",
+          "lead_time_minutes": 1431.5,
+          "lead_time_hours": 23.86,
+          "peak_probability": 0.8451,
+          "consecutive_warning_windows": 527
+        },
+        {
+          "failure_id": 4,
+          "failure_type": "Air leak",
+          "failure_start": "2020-07-15 14:30:00",
+          "detected": false,
+          "first_flag": "MISSED",
+          "lead_time_minutes": null,
+          "lead_time_hours": null,
+          "peak_probability": 0.0002,
+          "consecutive_warning_windows": 0
+        }
+      ]
+    },
+    "48h": {
+      "frozen_threshold": 0.02,
+      "frozen_persistence_windows": 5,
+      "best_val_f1": 0.265,
+      "metrics": {
+        "accuracy": 0.2086060437265005,
+        "precision": 0.040935894997146664,
+        "recall": 0.7469628601180146,
+        "f1_score": 0.07761807722133054,
+        "specificity": 0.1834877242987627,
+        "fpr": 0.8165122757012373,
+        "fnr": 0.2530371398819854,
+        "roc_auc": 0.5964837357658678,
+        "pr_auc": 0.08004060013973835,
+        "positive_prevalence_baseline": 0.044577511643379905,
+        "confusion_matrix": {
+          "tp": 2152,
+          "fp": 50418,
+          "tn": 11330,
+          "fn": 729
+        },
+        "false_alarm_episodes": 558,
+        "test_event_detection_rate": 1.0,
+        "mean_lead_time_detected_hours": 47.864999999999995
+      },
+      "event_detection": [
+        {
+          "failure_id": 3,
+          "failure_type": "Air leak",
+          "failure_start": "2020-06-05 10:00:00",
+          "detected": true,
+          "first_flag": "2020-06-03 10:01:13",
+          "lead_time_minutes": 2878.8,
+          "lead_time_hours": 47.98,
+          "peak_probability": 0.9998,
+          "consecutive_warning_windows": 1638
+        },
+        {
+          "failure_id": 4,
+          "failure_type": "Air leak",
+          "failure_start": "2020-07-15 14:30:00",
+          "detected": true,
+          "first_flag": "2020-07-13 14:45:14",
+          "lead_time_minutes": 2864.8,
+          "lead_time_hours": 47.75,
+          "peak_probability": 0.8716,
+          "consecutive_warning_windows": 514
+        }
+      ]
+    }
+  }
+}
